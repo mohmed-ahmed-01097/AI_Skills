@@ -27,7 +27,7 @@ doc matlab.project
 
 ## Opening and running built-in examples
 
-Prefer `openExample` — it opens the example in a safe writable copy:
+Prefer `openExample` - it opens the example in a safe writable copy:
 
 ```matlab
 % Open a Simulink example by its example name.
@@ -48,7 +48,7 @@ To find the exact example name for a topic:
 
 1. Run `openExample` to get a writable copy.
 2. Export the example architecture: `mbd_export_model_architecture('exampleModel', ...)`.
-3. Identify the exact pattern to reuse — do not copy the whole model blindly.
+3. Identify the exact pattern to reuse - do not copy the whole model blindly.
 4. List what will be adapted and what will be changed for the project.
 5. Implement the adapted pattern with `add_place` and `mbd_set_param_strict`.
 6. Verify by simulation and checks.

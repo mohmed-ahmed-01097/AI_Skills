@@ -5,23 +5,16 @@ A Model-Based Development skill for MATLAB, Simulink, Embedded Coder, Simulink T
 This repository contains:
 
 - a GitHub-ready skill source tree for coding agents
-- a ChatGPT uploadable package at `dist/skill.zip`
 - MATLAB helper assets for indirect Simulink work through scripts and Markdown evidence
 
 ## Quickstart
 
 ### Install from a published GitHub repo with skills.sh-compatible agents
 
-After this repo is pushed to GitHub, install it with the same pattern used by skills.sh-compatible repositories:
+After this repo is pushed to GitHub, install it with:
 
 ```bash
-npx skills@latest add <github-owner>/<repo-name>
-```
-
-Example after publishing under your account:
-
-```bash
-npx skills@latest add <your-github-user>/mbd-sdlc
+npx skills@latest add mohmed-ahmed-01097/mbd-sdlc
 ```
 
 Then select `mbd-sdlc` for the coding agents you want.
@@ -29,10 +22,49 @@ Then select `mbd-sdlc` for the coding agents you want.
 ### Push this folder to GitHub
 
 ```bash
-gh repo create mbd-sdlc --private --source=. --remote=origin --push
+gh repo create mohmed-ahmed-01097/mbd-sdlc --public --source=. --remote=origin --push
 ```
 
-Use `--public` instead of `--private` if you want a public repo.
+Repository URL: `https://github.com/mohmed-ahmed-01097/mbd-sdlc`
+
+
+### Use in ChatGPT
+
+To create a ChatGPT uploadable package when needed, run:
+
+```bash
+npm run package:chatgpt
+```
+
+Then upload the generated `dist/skill.zip` to the ChatGPT Skills interface. The `dist/` folder is generated locally and is not required in the repo zip.
+
+### Optional MATLAB MCP Server integration
+
+For agents that support Model Context Protocol, the skill can use the official MATLAB MCP Server as the preferred MATLAB execution channel. MCP is optional; browser mode and terminal MATLAB execution remain supported.
+
+Typical Claude Code setup after downloading the MATLAB MCP Server binary:
+
+```bash
+claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --disable-telemetry=true
+```
+
+For an already-open MATLAB Desktop session, configure the MCP toolbox once, run `shareMATLABSession()` inside MATLAB, then start the server with `--matlab-session-mode=existing` or `--matlab-session-mode=auto` when the MATLAB release supports that mode.
+
+If MCP existing-session mode is unavailable but MATLAB Engine API for Python is installed, share the running MATLAB Desktop session with:
+
+```matlab
+matlab.engine.shareEngine
+```
+
+Then call the optional bridge from CMD/PowerShell/Bash:
+
+```bash
+python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --code "assert(1+1==2); disp('ASSERT_TEST_PASS')"
+```
+
+For a new interactive MATLAB session that should stay open, use `matlab -r "..."`. Use `matlab -batch "..."` for automation that should close MATLAB and return an exit code. Do not use `-r` to connect to an already-open MATLAB session.
+
+See `docs/matlab-mcp-setup.md` and `skills/engineering/mbd-sdlc/references/matlab-mcp-integration.md`.
 
 ## Skill location
 
@@ -40,7 +72,6 @@ Use `--public` instead of `--private` if you want a public repo.
 skills/engineering/mbd-sdlc/
 ```
 
-The source skill is also packaged as `dist/skill.zip` for ChatGPT.
 
 ## What the skill does
 

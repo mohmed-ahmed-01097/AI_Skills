@@ -1,15 +1,42 @@
 # MBD operating modes
 
+
+## MATLAB MCP agent mode
+
+Use this when the active AI agent exposes MATLAB MCP tools. MCP is preferred over launching repeated independent MATLAB processes because it can run commands, run `.m` files, check MATLAB code, run MATLAB tests, and detect installed products through the configured server.
+
+Rules:
+
+- Treat MCP output as evidence, the same as terminal output.
+- Prefer `run_matlab_file` for generated scripts instead of long inline `evaluate_matlab_code` calls.
+- Use `check_matlab_code` before running newly generated scripts when available.
+- Do not use MCP to bypass approval. Model/project edits still require the user-approved change list.
+- If MCP is not available or fails, fall back to terminal agent mode or browser mode.
+
+See `matlab-mcp-integration.md` for setup and tool-use rules.
+
 ## Terminal agent mode
 
 Use this when the AI agent can run shell/CMD commands and MATLAB commands.
 
-Preferred command patterns:
+Preferred command patterns for non-interactive automation:
 
 ```bash
-matlab -batch "ver; exit"
+matlab -batch "ver"
 matlab -batch "run(''.MBD_agent/scripts/mbd_task.m'')"
 ```
+
+Use `-batch` when the command should run, return an exit code, and close MATLAB. Do not combine `-batch` with `-r`.
+
+For a new interactive MATLAB session that should remain open after the command, use `-r`:
+
+```bash
+matlab -r "assert(1+1==2); disp('ASSERT_TEST_PASS')"
+```
+
+Use `-nosplash` only as an optional older-release convenience flag; do not depend on it in current MATLAB releases.
+
+To reuse an already-open MATLAB Desktop session from CMD, do not use `-r`. Use MATLAB MCP existing-session mode when available, or use Python shared engine after running `matlab.engine.shareEngine` in MATLAB. See `matlab-mcp-integration.md`.
 
 On Windows, use the MATLAB executable available on PATH or the full installation path. Do not assume the executable name if MATLAB is not on PATH.
 

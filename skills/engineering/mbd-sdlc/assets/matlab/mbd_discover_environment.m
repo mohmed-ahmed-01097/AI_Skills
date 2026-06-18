@@ -55,7 +55,7 @@ catch ME
     fprintf(fid, 'Could not query active licenses: `%s`\n', esc(ME.message));
 end
 
-% Installed add-ons – write rows to file instead of just calling disp().
+% Installed add-ons - write rows to file instead of just calling disp().
 fprintf(fid, '\n## Installed add-ons\n\n');
 try
     if exist('matlab.addons.installedAddons', 'file') || ...

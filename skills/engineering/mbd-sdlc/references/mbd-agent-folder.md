@@ -23,7 +23,7 @@
 
 ### Scale-adjusted layouts
 
-**Single file or small edit** — use only what is needed:
+**Single file or small edit** - use only what is needed:
 
 ```text
 .MBD_agent/
@@ -34,13 +34,13 @@
   logs/
 ```
 
-**Large or new project** — use the full layout including `tasks/`.
+**Large or new project** - use the full layout including `tasks/`.
 
 ## File roles
 
 ### `constitution.md`
 
-Stable project description. Keep it short and update only when the project goal, main architecture, or safety boundary changes. Every edit to this file should be intentional — resist adding status updates, chat notes, or per-session changes here.
+Stable project description. Keep it short and update only when the project goal, main architecture, or safety boundary changes. Every edit to this file should be intentional - resist adding status updates, chat notes, or per-session changes here.
 
 Recommended sections:
 
@@ -98,4 +98,4 @@ Temporary notes and intermediate reasoning. Delete or condense before the final 
 - Never place chat transcripts, session summaries, or conversational AI output in project source folders.
 - Do not let `.MBD_agent` accumulate stale scripts and reports between tasks.
 - Before the final response, remove obsolete scripts and scratch unless they are evidence.
-- For small tasks, err toward fewer files — one architecture export and one report is often enough.
+- For small tasks, err toward fewer files - one architecture export and one report is often enough.

@@ -65,8 +65,8 @@ addShortcut(prj, 'Label', 'Run Tests', 'File', fullfile('tools', 'mbd', 'run_all
 
 In the project Settings dialog (or via API), point to:
 
-- `tools/mbd/project_startup.m` – adds project paths, loads config.
-- `tools/mbd/project_shutdown.m` – closes open models, clears workspace.
+- `tools/mbd/project_startup.m` - adds project paths, loads config.
+- `tools/mbd/project_shutdown.m` - closes open models, clears workspace.
 
 ```matlab
 % Set startup file via API.

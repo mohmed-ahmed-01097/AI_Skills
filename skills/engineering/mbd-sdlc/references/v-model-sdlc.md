@@ -40,7 +40,7 @@ tools/
 
 ## Keep it simple
 
-Do not create deep sub-trees in each phase folder until needed. Start with one README per phase and a clear file naming convention. Expand only when a folder accumulates more than 5–8 files.
+Do not create deep sub-trees in each phase folder until needed. Start with one README per phase and a clear file naming convention. Expand only when a folder accumulates more than 5-8 files.
 
 ## MATLAB project (.prj)
 

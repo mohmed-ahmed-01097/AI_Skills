@@ -2,7 +2,7 @@
 
 ## What are global scripts
 
-Global scripts are project-level automation scripts that apply to the whole project rather than a single implementation step. They are not AI artifacts — they belong to the project and should be version-controlled.
+Global scripts are project-level automation scripts that apply to the whole project rather than a single implementation step. They are not AI artifacts - they belong to the project and should be version-controlled.
 
 Typical set:
 
@@ -49,7 +49,7 @@ tools/
 ## Example: project_startup.m
 
 ```matlab
-% project_startup.m — runs when the MATLAB project opens.
+% project_startup.m - runs when the MATLAB project opens.
 run(fullfile(pwd, 'tools', 'mbd', 'config', 'config_solver.m'));
 run(fullfile(pwd, 'tools', 'mbd', 'config', 'config_data_types.m'));
 disp('Project ready.');
@@ -58,7 +58,7 @@ disp('Project ready.');
 ## Example: build_all.m
 
 ```matlab
-% build_all.m — build all models in dependency order.
+% build_all.m - build all models in dependency order.
 models = {'TopLevelModel', 'SubsystemModel'};
 for i = 1:numel(models)
     fprintf('Building %s...\n', models{i});
@@ -71,7 +71,7 @@ end
 ## Example: validate_all.m
 
 ```matlab
-% validate_all.m — run Model Advisor on all models.
+% validate_all.m - run Model Advisor on all models.
 models = {'TopLevelModel', 'SubsystemModel'};
 outDir = fullfile(pwd, '.MBD_agent', 'reports');
 for i = 1:numel(models)
@@ -84,7 +84,7 @@ end
 - Use named constants, not bare numbers.
 - Group related settings (solver, layout, codegen, test signals, data types).
 - Each config file should be `run()`-safe (idempotent, no side effects).
-- Keep each file short — one topic per file.
+- Keep each file short - one topic per file.
 
 ## When the AI creates these scripts
 

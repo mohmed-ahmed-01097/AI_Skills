@@ -1,4 +1,4 @@
-% config_layout.m — Layout preset for <ModelName>.
+% config_layout.m - Layout preset for <ModelName>.
 % Copy this file to .MBD_agent/scripts/ and edit for the target model.
 % Import it at the top of your model creation/edit script:
 %   run(fullfile('.MBD_agent', 'scripts', 'config_layout.m'));
