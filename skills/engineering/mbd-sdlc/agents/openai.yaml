@@ -1,0 +1,3 @@
+interface:
+  display_name: "MBD SDLC"
+  short_description: "Model-Based Development workflows for MATLAB, Simulink, testing, and code generation."

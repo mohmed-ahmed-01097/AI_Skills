@@ -1,0 +1,18 @@
+# MATLAB generated artifacts
+slprj/
+*_ert_rtw/
+*_grt_rtw/
+codegen/
+*.asv
+*.autosave
+
+# AI/project local working folders
+.MBD_agent/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
