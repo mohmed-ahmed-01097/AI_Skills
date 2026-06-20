@@ -13,14 +13,14 @@ Treat Simulink as an executable artifact that must be inspected, changed, and ve
 
 Never rely on visual memory of a model. Export the model, workspace, configuration, and test state before planning material changes. Treat every response as if the project is already complete - not a work in progress being explored in chat.
 
-## Session reuse policy (default behavior — read this first)
+## Session reuse policy (default behavior - read this first)
 
 **Default to reusing the user's already-open MATLAB session. Do not silently start a brand-new MATLAB process when an open one might already exist.** A fresh `matlab -batch`/`matlab -r` process cannot see the user's loaded models, base workspace variables, or breakpoints, and it consumes a separate license seat. Check for an existing session before launching a new one, in this order:
 
-1. **MCP configured**: the MCP server's session mode decides this, not the agent. Setup should use `--matlab-session-mode=auto` (attach to a shared/existing session if one exists, otherwise start one) so reuse is the default rather than an opt-in. If the server is configured with a different mode and the user wants reuse, tell them to reconfigure — do not work around it with a second execution channel.
+1. **MCP configured**: the MCP server's session mode decides this, not the agent. Setup should use `--matlab-session-mode=auto` (attach to a shared/existing session if one exists, otherwise start one) so reuse is the default rather than an opt-in. If the server is configured with a different mode and the user wants reuse, tell them to reconfigure - do not work around it with a second execution channel.
 2. **No MCP, but MATLAB Engine API for Python is installed**: run the bridge script with `--list` first. If a shared session is found, connect to it. If none is found, ask the user to run `matlab.engine.shareEngine` in their open MATLAB Desktop, then re-check `--list`. Only fall back to spawning a new process if the user declines to share or none is available.
 3. **Terminal-only access** (`matlab -batch` / `matlab -r`, no MCP, no Python engine): state plainly that these commands always start a brand-new MATLAB process and cannot attach to an already-open MATLAB Desktop. Ask whether a new process is acceptable, or offer the Python shared-engine path instead.
-4. Never run `matlab -r` "just to get a session going" when the goal is reuse — `-r` always creates a new process; it never attaches to one already running.
+4. Never run `matlab -r` "just to get a session going" when the goal is reuse - `-r` always creates a new process; it never attaches to one already running.
 
 For mode details, read `references/mbd-operating-modes.md`. For MCP-specific rules and exact setup commands, read `references/matlab-mcp-integration.md`.
 
@@ -28,14 +28,14 @@ For mode details, read `references/mbd-operating-modes.md`. For MCP-specific rul
 
 Classify the session along two independent axes before doing project work.
 
-**Execution channel** — how MATLAB commands actually run:
+**Execution channel** - how MATLAB commands actually run:
 
-1. **MATLAB MCP mode**: MATLAB MCP tools are available. Prefer them for discovery, MATLAB code checks, `.m` execution, MATLAB tests, and short reviewed commands. MCP is an execution channel only — it does not replace `.MBD_agent`, Markdown evidence, approval-before-edit, or final review.
+1. **MATLAB MCP mode**: MATLAB MCP tools are available. Prefer them for discovery, MATLAB code checks, `.m` execution, MATLAB tests, and short reviewed commands. MCP is an execution channel only - it does not replace `.MBD_agent`, Markdown evidence, approval-before-edit, or final review.
 2. **Python shared-engine mode**: MCP is unavailable but the user wants their already-open MATLAB Desktop reused, and the MATLAB Engine API for Python is installed. Use `assets/python/matlab_shared_engine_eval.py` against a session shared with `matlab.engine.shareEngine`.
 3. **Terminal agent mode**: run MATLAB commands from the shell or CMD when neither of the above is available. Use `-batch` for automation that closes MATLAB; use `-r` only to start a new interactive session that stays open. Console output, warnings, and errors are direct evidence.
 4. **Browser mode**: the agent cannot run MATLAB at all. Write `.m` scripts for the user to run, then ask for the resulting zip/reports/logs before continuing.
 
-**Project scale** — how much `.MBD_agent` structure to create:
+**Project scale** - how much `.MBD_agent` structure to create:
 
 1. **Single-file/small edit**: keep `.MBD_agent` minimal (no `tasks/`, `architecture/`, or large catalog exports).
 2. **Large project/new project**: use the full `.MBD_agent` structure and ask once whether the V-Model structure is required.
@@ -115,7 +115,7 @@ The `assets/python/` folder contains optional bridge tooling for local trusted w
 
 - Use MathWorks documentation for the detected MATLAB release as the source of truth. Do not invent API behavior.
 - Do not bundle copied MathWorks documentation into the project or the skill.
-- **Don't guess block names or parameters from memory.** Run `mbd_export_full_catalog` (cached, regenerate only after a toolbox/release change) or inspect the specific block with `get_param(block, 'DialogParameters')`. `common-simulink-blocks.md` is a rough memory aid only — verify against the generated catalog, not the other way around.
+- **Don't guess block names or parameters from memory.** Run `mbd_export_full_catalog` (cached, regenerate only after a toolbox/release change) or inspect the specific block with `get_param(block, 'DialogParameters')`. `common-simulink-blocks.md` is a rough memory aid only - verify against the generated catalog, not the other way around.
 - Use MCP discovery when available; otherwise use `ver`, installed products, and project files to adapt. Do not assume toolboxes.
 - **Reuse before you spawn**: follow the session reuse policy above. Do not start a new MATLAB process when an existing/shared session can be used instead.
 - Prefer small, reversible scripted changes. With MCP, review model-editing tool calls before execution and do not run model-editing code before user approval.

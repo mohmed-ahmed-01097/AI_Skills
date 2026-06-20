@@ -1,6 +1,8 @@
 {
-  "name": "mbd-sdlc",
+  "name": "ai-skills",
   "skills": [
-    "./skills/engineering/mbd-sdlc"
+    "./skills/engineering/mbd-sdlc",
+    "./skills/productivity/teach",
+    "./skills/productivity/writing-great-skills"
   ]
 }

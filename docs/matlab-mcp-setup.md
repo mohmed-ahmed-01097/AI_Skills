@@ -49,7 +49,7 @@ Create `.vscode/mcp.json` in the workspace and adapt the paths:
 
 ## Existing MATLAB Desktop session through MCP
 
-For an already-open MATLAB Desktop session, configure the server to attach automatically by default — this is not a special case to opt into separately.
+For an already-open MATLAB Desktop session, configure the server to attach automatically by default - this is not a special case to opt into separately.
 
 Typical sequence:
 

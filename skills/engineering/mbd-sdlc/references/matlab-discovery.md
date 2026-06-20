@@ -4,7 +4,7 @@ Use discovery before relying on any toolbox-specific API.
 
 ## Session check (do this first)
 
-Before running discovery commands, confirm which MATLAB session will actually run them — a new headless process and the user's open MATLAB Desktop are not the same session and will not see each other's variables or loaded models.
+Before running discovery commands, confirm which MATLAB session will actually run them - a new headless process and the user's open MATLAB Desktop are not the same session and will not see each other's variables or loaded models.
 
 - MCP available: confirm the server is configured with `--matlab-session-mode=auto` so it attaches to a shared session automatically. See `matlab-mcp-integration.md`.
 - No MCP, Python engine installed: run `matlab_shared_engine_eval.py --list` to check for a shared session before falling back to a new process.
@@ -37,7 +37,7 @@ The helper writes:
 - Simulink library discovery sample when Simulink is available
 - installed Simulink apps (Simulink Test, Embedded Coder, Stateflow, etc.)
 
-Note that this helper reports the environment of whichever MATLAB session executes it — it does not tell you whether that session is new or reused. Settle the session check above first.
+Note that this helper reports the environment of whichever MATLAB session executes it - it does not tell you whether that session is new or reused. Settle the session check above first.
 
 ## Full catalog: environment + block library in one file
 
@@ -47,9 +47,9 @@ When the task needs to know what blocks/parameters actually exist (not just MATL
 mbd_export_full_catalog();
 ```
 
-This writes one file, `.MBD_agent/reports/matlab_simulink_full_catalog.md`, combining the environment report above with a Simulink block library catalog (block paths, types, mask types, and dialog parameter names) read directly from the installed MATLAB. It is not a hand-written list — see `common-simulink-blocks.md` for why that distinction matters.
+This writes one file, `.MBD_agent/reports/matlab_simulink_full_catalog.md`, combining the environment report above with a Simulink block library catalog (block paths, types, mask types, and dialog parameter names) read directly from the installed MATLAB. It is not a hand-written list - see `common-simulink-blocks.md` for why that distinction matters.
 
-Defaults are deliberately lean: `searchDepth=4`, library root `{'simulink'}` only, and parameter *names* only (no values, since fetching every default value for every block is slow and produces a much larger file for marginal benefit — the AI can fetch a specific block's current value on demand with `get_param` when it actually needs it).
+Defaults are deliberately lean: `searchDepth=4`, library root `{'simulink'}` only, and parameter *names* only (no values, since fetching every default value for every block is slow and produces a much larger file for marginal benefit - the AI can fetch a specific block's current value on demand with `get_param` when it actually needs it).
 
 Use the optional arguments when the task needs more:
 
@@ -68,7 +68,7 @@ mbd_export_full_catalog(fullfile(pwd, '.MBD_agent', 'reports'), 4, false, {'simu
 mbd_export_full_catalog(fullfile(pwd, '.MBD_agent', 'reports'), 4, false, {'simulink'}, true);
 ```
 
-If you only need version/products/apps without the block catalog, use `mbd_discover_environment` alone — it's faster.
+If you only need version/products/apps without the block catalog, use `mbd_discover_environment` alone - it's faster.
 
 ## Project discovery
 

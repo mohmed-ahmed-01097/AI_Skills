@@ -1,16 +1,17 @@
 {
-  "name": "mbd-sdlc-skills",
+  "name": "ai-skills",
   "version": "0.1.0",
   "private": true,
-  "description": "Model-Based Development SDLC skill for MATLAB and Simulink agent workflows",
+  "description": "AI skills for Model-Based Development, learning, and skill authoring workflows",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mohmed-ahmed-01097/mbd-sdlc"
+    "url": "https://github.com/mohmed-ahmed-01097/AI_Skills"
   },
   "license": "MIT",
   "scripts": {
-    "list": "find skills -name SKILL.md -print",
-    "package:chatgpt": "bash scripts/package-chatgpt-skill.sh"
+    "list": "bash scripts/list-skills.sh",
+    "package:chatgpt": "bash scripts/package-chatgpt-skill.sh",
+    "link:claude": "bash scripts/link-skills.sh"
   },
   "packageManager": "npm@10"
 }

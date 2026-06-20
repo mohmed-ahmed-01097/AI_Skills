@@ -13,15 +13,15 @@ MCP is an execution channel, not a replacement for the MBD workflow. Keep the st
 5. implement through `.m` scripts or controlled MATLAB commands
 6. re-export, test, and review
 
-Use MCP to run MATLAB commands, run `.m` helper files, check MATLAB code, run tests, and inspect installed products when the agent exposes MATLAB MCP tools — configured by default to reuse the user's open MATLAB session rather than starting a new one. If MCP is unavailable, fall back to the Python shared-engine path when session reuse matters, then to terminal MATLAB commands. If no MATLAB execution channel is available, use browser zip mode.
+Use MCP to run MATLAB commands, run `.m` helper files, check MATLAB code, run tests, and inspect installed products when the agent exposes MATLAB MCP tools - configured by default to reuse the user's open MATLAB session rather than starting a new one. If MCP is unavailable, fall back to the Python shared-engine path when session reuse matters, then to terminal MATLAB commands. If no MATLAB execution channel is available, use browser zip mode.
 
 ## Availability decision
 
 At the beginning of agent-mode work, classify the execution path in this order:
 
-1. MATLAB MCP tools available in the current agent — prefer this channel, configured for session reuse (see below).
-2. No MCP, but the MATLAB Engine API for Python is installed and the user has MATLAB Desktop open — use the Python shared-engine path to reuse that exact session.
-3. Terminal MATLAB commands available, such as `matlab -batch`, `matlab -r`, or OS-specific launch commands — these always start a new process; say so before using them.
+1. MATLAB MCP tools available in the current agent - prefer this channel, configured for session reuse (see below).
+2. No MCP, but the MATLAB Engine API for Python is installed and the user has MATLAB Desktop open - use the Python shared-engine path to reuse that exact session.
+3. Terminal MATLAB commands available, such as `matlab -batch`, `matlab -r`, or OS-specific launch commands - these always start a new process; say so before using them.
 4. Browser mode only: write scripts for the user to run and return logs/reports.
 
 Do not assume MCP exists just because the repo mentions it. If the current agent cannot call MCP tools, continue with the next channel in the list.
@@ -59,7 +59,7 @@ For an already-open MATLAB session, configure the server to attach automatically
 2. in the open MATLAB Desktop, run `shareMATLABSession()`
 3. start the MCP server with `--matlab-session-mode=auto` so it attaches to that shared session when one exists and only starts a new one when none is found
 
-**Use `--matlab-session-mode=auto` as the default for every setup**, not just when reuse is explicitly requested — it degrades gracefully to a new session when nothing is shared, so there is no downside to leaving it on. Reserve `--matlab-session-mode=existing` for cases where starting a new session should be a hard error if nothing is shared (for example, a CI step that must fail loudly rather than silently spin up MATLAB).
+**Use `--matlab-session-mode=auto` as the default for every setup**, not just when reuse is explicitly requested - it degrades gracefully to a new session when nothing is shared, so there is no downside to leaving it on. Reserve `--matlab-session-mode=existing` for cases where starting a new session should be a hard error if nothing is shared (for example, a CI step that must fail loudly rather than silently spin up MATLAB).
 
 Exact flag names and supported modes can change between MATLAB MCP Server versions. Run the server binary with `--help` (or check the version actually installed) before relying on any flag below, rather than assuming this document is current for that release.
 
@@ -103,7 +103,7 @@ Run a generated script in the shared session:
 python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --file .MBD_agent/scripts/mbd_task.m
 ```
 
-If more than one shared session exists, pass `--engine-name` explicitly — do not let the script silently pick one, since connecting to the wrong session can edit the wrong project.
+If more than one shared session exists, pass `--engine-name` explicitly - do not let the script silently pick one, since connecting to the wrong session can edit the wrong project.
 
 Use this only on local trusted machines. A shared MATLAB session can modify the open workspace, models, data dictionaries, files, and project state. Approval-before-edit still applies.
 
@@ -151,7 +151,7 @@ Do not share one MCP MATLAB server between multiple users. Respect MathWorks lic
 
 ## Integration with helper assets
 
-For MBD work, copy the relevant helper assets from `assets/matlab/` into `.MBD_agent/scripts/` or the user-approved global script folder, then run them through MCP. Match the actual function signatures — each takes an output directory, not the project root:
+For MBD work, copy the relevant helper assets from `assets/matlab/` into `.MBD_agent/scripts/` or the user-approved global script folder, then run them through MCP. Match the actual function signatures - each takes an output directory, not the project root:
 
 ```matlab
 mbd_create_agent_folder(projectRoot)

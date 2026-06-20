@@ -45,7 +45,7 @@ python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --
 python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --file .MBD_agent/scripts/mbd_task.m
 ```
 
-If `--list` returns more than one shared session, pass `--engine-name` explicitly rather than letting the script guess — connecting to the wrong session can edit the wrong project. Treat script output the same as MATLAB console evidence and save it to `.MBD_agent/logs/`.
+If `--list` returns more than one shared session, pass `--engine-name` explicitly rather than letting the script guess - connecting to the wrong session can edit the wrong project. Treat script output the same as MATLAB console evidence and save it to `.MBD_agent/logs/`.
 
 ## Terminal agent mode
 
@@ -68,7 +68,7 @@ matlab -r "assert(1+1==2); disp('ASSERT_TEST_PASS')"
 
 Use `-nosplash` only as an optional older-release convenience flag; do not depend on it in current MATLAB releases.
 
-**Both `-batch` and `-r` always start a new MATLAB process** — neither attaches to an already-open MATLAB Desktop session. If the goal is to reuse an open session, use MCP existing/auto-session mode or Python shared engine instead; see the Session check above and `matlab-mcp-integration.md`.
+**Both `-batch` and `-r` always start a new MATLAB process** - neither attaches to an already-open MATLAB Desktop session. If the goal is to reuse an open session, use MCP existing/auto-session mode or Python shared engine instead; see the Session check above and `matlab-mcp-integration.md`.
 
 On Windows, use the MATLAB executable available on PATH or the full installation path. Do not assume the executable name if MATLAB is not on PATH.
 

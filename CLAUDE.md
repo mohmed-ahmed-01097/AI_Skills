@@ -22,6 +22,6 @@ If MCP is unavailable or fails, fall back to the Python shared-engine path (when
 
 ## Existing MATLAB Desktop session
 
-Default to reusing the user's already-open MATLAB session rather than starting a new process — this is the standing behavior, not something that requires the user to ask for it first. Do not use `matlab -batch` or `matlab -r` as the default path. Configure MCP with `--matlab-session-mode=auto` so it attaches automatically. If MCP is not configured, ask the user to run `matlab.engine.shareEngine` in MATLAB Desktop and then use `skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py` from the terminal.
+Default to reusing the user's already-open MATLAB session rather than starting a new process - this is the standing behavior, not something that requires the user to ask for it first. Do not use `matlab -batch` or `matlab -r` as the default path. Configure MCP with `--matlab-session-mode=auto` so it attaches automatically. If MCP is not configured, ask the user to run `matlab.engine.shareEngine` in MATLAB Desktop and then use `skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py` from the terminal.
 
 Use `matlab -r "..."` only to start a new interactive MATLAB process that remains open, and only after the user has confirmed a new process is acceptable. Use `matlab -batch "..."` for non-interactive automation that should close MATLAB and return an exit code.

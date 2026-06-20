@@ -1,6 +1,6 @@
 # Common Simulink blocks
 
-**This file is a hand-written memory aid, not generated from a real MATLAB install.** It is meant only to help recognize common block names and roughly which parameters matter — treat the "Key parameters" column as a rough pointer, not a verified fact. Parameter names, defaults, and availability change between releases and depend on which toolboxes are licensed, and this list was not checked against any specific version.
+**This file is a hand-written memory aid, not generated from a real MATLAB install.** It is meant only to help recognize common block names and roughly which parameters matter - treat the "Key parameters" column as a rough pointer, not a verified fact. Parameter names, defaults, and availability change between releases and depend on which toolboxes are licensed, and this list was not checked against any specific version.
 
 **Before setting any parameter, verify it against the user's actual MATLAB**, not this table:
 

@@ -1,10 +1,12 @@
-# MBD SDLC Skill
+# AI Skills
 
-A Model-Based Development skill for MATLAB, Simulink, Embedded Coder, Simulink Test, Model Advisor, and V-Model SDLC workflows.
+A GitHub-ready AI skills repository for Model-Based Development, MATLAB/Simulink agent workflows, learning workflows, and skill-authoring support.
 
 This repository contains:
 
 - a GitHub-ready skill source tree for coding agents
+- the `mbd-sdlc` engineering skill for MATLAB/Simulink MBD workflows
+- selected productivity skills for teaching and skill authoring
 - MATLAB helper assets for indirect Simulink work through scripts and Markdown evidence
 
 ## Quickstart
@@ -14,7 +16,7 @@ This repository contains:
 After this repo is pushed to GitHub, install it with:
 
 ```bash
-npx skills@latest add mohmed-ahmed-01097/mbd-sdlc
+npx skills@latest add mohmed-ahmed-01097/AI_Skills
 ```
 
 Then select `mbd-sdlc` for the coding agents you want.
@@ -22,10 +24,10 @@ Then select `mbd-sdlc` for the coding agents you want.
 ### Push this folder to GitHub
 
 ```bash
-gh repo create mohmed-ahmed-01097/mbd-sdlc --public --source=. --remote=origin --push
+gh repo create mohmed-ahmed-01097/AI_Skills --public --source=. --remote=origin --push
 ```
 
-Repository URL: `https://github.com/mohmed-ahmed-01097/mbd-sdlc`
+Repository URL: `https://github.com/mohmed-ahmed-01097/AI_Skills`
 
 
 ### Use in ChatGPT
@@ -48,7 +50,7 @@ Typical Claude Code setup after downloading the MATLAB MCP Server binary:
 claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --matlab-session-mode=auto --disable-telemetry=true
 ```
 
-For an already-open MATLAB Desktop session, configure the MCP toolbox once, run `shareMATLABSession()` inside MATLAB, then start the server with `--matlab-session-mode=auto` — this attaches to that shared session automatically and only starts a new one when none is found, so it should be the default rather than an opt-in.
+For an already-open MATLAB Desktop session, configure the MCP toolbox once, run `shareMATLABSession()` inside MATLAB, then start the server with `--matlab-session-mode=auto` ? this attaches to that shared session automatically and only starts a new one when none is found, so it should be the default rather than an opt-in.
 
 If MCP is unavailable but the MATLAB Engine API for Python is installed, share the running MATLAB Desktop session with:
 
@@ -62,9 +64,21 @@ Then call the optional bridge from CMD/PowerShell/Bash:
 python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --code "assert(1+1==2); disp('ASSERT_TEST_PASS')"
 ```
 
-For a new interactive MATLAB session that should stay open, use `matlab -r "..."` — only after confirming with the user that a new process (not their open MATLAB Desktop) is what they want. Use `matlab -batch "..."` for automation that should close MATLAB and return an exit code. Neither flag connects to an already-open MATLAB session.
+For a new interactive MATLAB session that should stay open, use `matlab -r "..."` ? only after confirming with the user that a new process (not their open MATLAB Desktop) is what they want. Use `matlab -batch "..."` for automation that should close MATLAB and return an exit code. Neither flag connects to an already-open MATLAB session.
 
 See `docs/matlab-mcp-setup.md` and `skills/engineering/mbd-sdlc/references/matlab-mcp-integration.md`.
+
+
+## Included skills
+
+### Engineering
+
+- **[`mbd-sdlc`](./skills/engineering/mbd-sdlc/SKILL.md)** - Model-Based Development workflow for MATLAB, Simulink, Embedded Coder, Simulink Test, Model Advisor, code generation, MATLAB MCP, terminal agents, and browser zip workflows.
+
+### Productivity
+
+- **[`teach`](./skills/productivity/teach/SKILL.md)** - Stateful teaching workspace for lessons, reference sheets, resources, and learning records.
+- **[`writing-great-skills`](./skills/productivity/writing-great-skills/SKILL.md)** - Reference for writing, reviewing, pruning, and improving predictable skills.
 
 ## Skill location
 
@@ -124,3 +138,15 @@ See:
 - `.claude-plugin/plugin.json` for skills.sh-compatible skill listing
 - `docs/invocation.md` for invocation style
 - `skills/engineering/README.md` for the skill catalog
+
+
+## Publish readiness checklist
+
+Before publishing:
+
+1. Run `npm run list` and confirm the expected skills are listed.
+2. Run `npm run package:chatgpt` if you need a ChatGPT uploadable package for `mbd-sdlc`.
+3. Confirm `.claude-plugin/plugin.json` lists the public repo skills.
+4. Confirm `ATTRIBUTION.md` is kept because selected productivity skills and helper scripts are adapted from an MIT-licensed reference repo.
+5. Push with `gh repo create mohmed-ahmed-01097/AI_Skills --public --source=. --remote=origin --push` or push to the existing repo.
+
