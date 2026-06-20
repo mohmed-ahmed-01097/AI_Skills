@@ -17,4 +17,4 @@ Invoke it for:
 
 Do not invoke it for generic MATLAB numerical scripting unless the task touches Model-Based Development artifacts or SDLC process.
 
-When MCP is present, use it as an execution channel for MATLAB commands and files. When the user requires reusing an already-open MATLAB Desktop session and MCP existing-session mode is unavailable, use Python shared engine after the MATLAB session is shared. The core workflow remains evidence export, Markdown planning, user-approved scripted edits, re-export, validation, and final review.
+When MCP is present, use it as an execution channel for MATLAB commands and files, configured by default to attach to the user's already-open MATLAB session (`--matlab-session-mode=auto`) rather than always starting a new one. When MCP is unavailable, use Python shared engine after the MATLAB session is shared to get the same reuse. The core workflow remains evidence export, Markdown planning, user-approved scripted edits, re-export, validation, and final review.

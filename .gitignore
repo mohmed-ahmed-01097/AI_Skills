@@ -14,5 +14,9 @@ codegen/
 .vscode/
 .idea/
 
+# Python (optional MCP bridge tooling)
+__pycache__/
+*.pyc
+
 # Logs
 *.log

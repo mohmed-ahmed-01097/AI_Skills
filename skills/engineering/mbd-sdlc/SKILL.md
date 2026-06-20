@@ -13,18 +13,32 @@ Treat Simulink as an executable artifact that must be inspected, changed, and ve
 
 Never rely on visual memory of a model. Export the model, workspace, configuration, and test state before planning material changes. Treat every response as if the project is already complete - not a work in progress being explored in chat.
 
+## Session reuse policy (default behavior — read this first)
+
+**Default to reusing the user's already-open MATLAB session. Do not silently start a brand-new MATLAB process when an open one might already exist.** A fresh `matlab -batch`/`matlab -r` process cannot see the user's loaded models, base workspace variables, or breakpoints, and it consumes a separate license seat. Check for an existing session before launching a new one, in this order:
+
+1. **MCP configured**: the MCP server's session mode decides this, not the agent. Setup should use `--matlab-session-mode=auto` (attach to a shared/existing session if one exists, otherwise start one) so reuse is the default rather than an opt-in. If the server is configured with a different mode and the user wants reuse, tell them to reconfigure — do not work around it with a second execution channel.
+2. **No MCP, but MATLAB Engine API for Python is installed**: run the bridge script with `--list` first. If a shared session is found, connect to it. If none is found, ask the user to run `matlab.engine.shareEngine` in their open MATLAB Desktop, then re-check `--list`. Only fall back to spawning a new process if the user declines to share or none is available.
+3. **Terminal-only access** (`matlab -batch` / `matlab -r`, no MCP, no Python engine): state plainly that these commands always start a brand-new MATLAB process and cannot attach to an already-open MATLAB Desktop. Ask whether a new process is acceptable, or offer the Python shared-engine path instead.
+4. Never run `matlab -r` "just to get a session going" when the goal is reuse — `-r` always creates a new process; it never attaches to one already running.
+
+For mode details, read `references/mbd-operating-modes.md`. For MCP-specific rules and exact setup commands, read `references/matlab-mcp-integration.md`.
+
 ## First decision
 
-Classify the session before doing project work:
+Classify the session along two independent axes before doing project work.
 
-1. **MATLAB MCP agent mode**: if MATLAB MCP tools are available, prefer them for discovery, MATLAB code checks, `.m` execution, MATLAB tests, and short reviewed commands. MCP is an execution channel only; it does not replace `.MBD_agent`, Markdown evidence, approval-before-edit, or final review.
-2. **Existing MATLAB Desktop mode**: if the user requires reusing an already-open MATLAB app, use MCP existing-session mode when configured, or Python shared engine after the user runs `matlab.engine.shareEngine` in MATLAB. Do not use `matlab -r` for this purpose.
-3. **Terminal agent mode**: run MATLAB commands from the shell or CMD when MCP is unavailable. Use `-batch` for automation that closes MATLAB; use `-r` only to start a new interactive MATLAB session and keep it open. Console output, warnings, and errors are direct evidence.
-4. **Browser mode**: write MATLAB `.m` scripts for the user to run, then ask for the resulting zip/reports/logs before continuing.
-4. **Single-file/small edit**: keep `.MBD_agent` minimal (no `tasks/`, `architecture/`, or large catalog exports).
-5. **Large project/new project**: use the full `.MBD_agent` structure and ask once whether the V-Model structure is required.
+**Execution channel** — how MATLAB commands actually run:
 
-For mode details, read `references/mbd-operating-modes.md`. For MCP-specific rules, read `references/matlab-mcp-integration.md`.
+1. **MATLAB MCP mode**: MATLAB MCP tools are available. Prefer them for discovery, MATLAB code checks, `.m` execution, MATLAB tests, and short reviewed commands. MCP is an execution channel only — it does not replace `.MBD_agent`, Markdown evidence, approval-before-edit, or final review.
+2. **Python shared-engine mode**: MCP is unavailable but the user wants their already-open MATLAB Desktop reused, and the MATLAB Engine API for Python is installed. Use `assets/python/matlab_shared_engine_eval.py` against a session shared with `matlab.engine.shareEngine`.
+3. **Terminal agent mode**: run MATLAB commands from the shell or CMD when neither of the above is available. Use `-batch` for automation that closes MATLAB; use `-r` only to start a new interactive session that stays open. Console output, warnings, and errors are direct evidence.
+4. **Browser mode**: the agent cannot run MATLAB at all. Write `.m` scripts for the user to run, then ask for the resulting zip/reports/logs before continuing.
+
+**Project scale** — how much `.MBD_agent` structure to create:
+
+1. **Single-file/small edit**: keep `.MBD_agent` minimal (no `tasks/`, `architecture/`, or large catalog exports).
+2. **Large project/new project**: use the full `.MBD_agent` structure and ask once whether the V-Model structure is required.
 
 ## Mandatory questions - ask only what is not already known
 
@@ -39,7 +53,7 @@ Ask these once at project start. Do not repeat if the answer is discoverable or 
 
 ## Standard loop
 
-1. **Discover**: detect whether MATLAB MCP tools are available, then detect MATLAB release, installed products and apps, `.prj` project file, model files, data dictionaries, MAT files, requirements/test artifacts, and generated code folders. Use MCP discovery when available; otherwise run `mbd_discover_environment`.
+1. **Discover**: first apply the session reuse policy above (check for an existing/shared MATLAB session before launching a new one), then detect whether MATLAB MCP tools are available, then detect MATLAB release, installed products and apps, `.prj` project file, model files, data dictionaries, MAT files, requirements/test artifacts, and generated code folders. Use MCP discovery when available; otherwise run `mbd_discover_environment`. For tasks that involve adding/editing blocks, also run `mbd_export_full_catalog` (cached after the first run) instead of relying on memory for block names or parameters.
 2. **Create/reuse `.MBD_agent`**: keep AI artifacts outside project source unless the user asks otherwise. See `references/mbd-agent-folder.md`.
 3. **Export evidence**: model architecture (blocks, parameters, lines, annotations, signal attributes), workspace/model workspace/data dictionary, configuration sets, Model Advisor/codegen/test state.
 4. **Plan in Markdown**: use exported evidence only. Keep plans task-scoped and short.
@@ -87,20 +101,23 @@ The `assets/matlab/` folder contains reusable helper scripts. Copy them into `.M
 | `mbd_export_model_architecture.m` | Export blocks, params, lines, annotations |
 | `mbd_export_workspace_state.m` | Export workspace, model workspace, MAT files |
 | `mbd_export_data_dictionary.m` | Export data dictionary (dynamic section discovery) |
-| `mbd_export_block_library_catalog.m` | Export installed block catalog |
+| `mbd_export_block_library_catalog.m` | Export block library catalog (names, optional default values, multiple roots) |
+| `mbd_export_full_catalog.m` | Combine environment + block catalog into one cached file |
 | `mbd_run_model_advisor.m` | Run Model Advisor with check group control |
 | `mbd_codegen_report.m` | Export code generation config evidence |
 | `mbd_test_manager_template.m` | Create a basic Simulink Test file |
 | `mbd_project_init.m` | Create or open a MATLAB project (.prj) |
 | `config_layout_template.m` | Layout preset template (copy and rename) |
 
-The `assets/python/` folder contains optional bridge tooling for local trusted workflows. Use `matlab_shared_engine_eval.py` only when the user wants CMD/terminal commands to run inside an already-open shared MATLAB Desktop session.
+The `assets/python/` folder contains optional bridge tooling for local trusted workflows. Use `matlab_shared_engine_eval.py --list` as part of the session-check step whenever MCP is unavailable, so an already-open MATLAB Desktop is reused instead of starting a new process.
 
 ## Non-negotiable rules
 
 - Use MathWorks documentation for the detected MATLAB release as the source of truth. Do not invent API behavior.
 - Do not bundle copied MathWorks documentation into the project or the skill.
+- **Don't guess block names or parameters from memory.** Run `mbd_export_full_catalog` (cached, regenerate only after a toolbox/release change) or inspect the specific block with `get_param(block, 'DialogParameters')`. `common-simulink-blocks.md` is a rough memory aid only — verify against the generated catalog, not the other way around.
 - Use MCP discovery when available; otherwise use `ver`, installed products, and project files to adapt. Do not assume toolboxes.
+- **Reuse before you spawn**: follow the session reuse policy above. Do not start a new MATLAB process when an existing/shared session can be used instead.
 - Prefer small, reversible scripted changes. With MCP, review model-editing tool calls before execution and do not run model-editing code before user approval.
 - **No magic numbers**: put layout positions, sample times, data types, solver settings, and codegen settings into `config_*.m` files. See `assets/matlab/config_layout_template.m`.
 - Use existing project style unless the user asks for a new style.

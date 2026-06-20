@@ -8,6 +8,7 @@ Use MCP when you want the agent to execute MATLAB commands or `.m` scripts throu
 
 Good uses:
 
+- reuse the user's already-open MATLAB session by default instead of starting a new process
 - detect MATLAB release and installed products
 - check generated MATLAB code before execution
 - run `.m` helper scripts from `.MBD_agent/scripts/`
@@ -21,7 +22,7 @@ Do not use MCP to bypass the skill approval workflow. For model edits, list the 
 After downloading the MATLAB MCP Server binary, run:
 
 ```bash
-claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --disable-telemetry=true
+claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --matlab-session-mode=auto --disable-telemetry=true
 ```
 
 For a Windows binary path, use the full `.exe` path.
@@ -38,6 +39,7 @@ Create `.vscode/mcp.json` in the workspace and adapt the paths:
       "command": "C:\\fullpath\\to\\matlab-mcp-server-windows-x64.exe",
       "args": [
         "--initial-working-folder=C:\\path\\to\\mbd-project",
+        "--matlab-session-mode=auto",
         "--disable-telemetry=true"
       ]
     }
@@ -47,19 +49,21 @@ Create `.vscode/mcp.json` in the workspace and adapt the paths:
 
 ## Existing MATLAB Desktop session through MCP
 
-For an already-open MATLAB Desktop session, use existing-session mode only when supported and configured.
+For an already-open MATLAB Desktop session, configure the server to attach automatically by default — this is not a special case to opt into separately.
 
 Typical sequence:
 
 1. run `matlab-mcp-server --setup-matlab` once
 2. in the open MATLAB Command Window, run `shareMATLABSession()`
-3. start the MCP server with `--matlab-session-mode=existing` or `--matlab-session-mode=auto`
+3. start the MCP server with `--matlab-session-mode=auto`
 
-For R2022b-oriented projects, do not assume existing-session mode is available. Use a new MCP MATLAB session, Python shared-engine execution, terminal execution, or browser zip mode when needed.
+`auto` attaches to the shared session when one exists and only starts a new headless session when none is found, so there is no downside to using it as the default. Reserve `--matlab-session-mode=existing` for cases where a missing shared session should be a hard error instead of silently starting a new one.
+
+Exact flag names can change between MATLAB MCP Server releases. Run the server binary with `--help` to confirm before relying on this document for your installed version.
 
 ## Existing MATLAB Desktop session through Python shared engine
 
-If MCP existing-session mode is unavailable but the MATLAB Engine API for Python is installed, the agent or user can connect to an already-open MATLAB Desktop session.
+If MCP is unavailable but the MATLAB Engine API for Python is installed, the agent or user can still connect to an already-open MATLAB Desktop session instead of starting a new process.
 
 In MATLAB Desktop, share the current session:
 
@@ -101,7 +105,7 @@ Use `-nosplash` only as an optional compatibility flag for older releases. In ne
 matlab -nosplash -r "assert(1+1==2); disp('ASSERT_TEST_PASS')"
 ```
 
-Do not treat `-r` as a connection to an already-open MATLAB session. It starts a MATLAB process. Use MCP existing-session mode or Python shared engine when the requirement is to reuse an existing MATLAB Desktop session.
+Do not treat `-r` as a connection to an already-open MATLAB session. It starts a MATLAB process. Use MCP configured with `--matlab-session-mode=auto`, or the Python shared-engine path, when the requirement is to reuse an existing MATLAB Desktop session.
 
 Use `-batch` for non-interactive automation that should return an exit code and close MATLAB automatically:
 

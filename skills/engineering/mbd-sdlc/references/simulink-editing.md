@@ -58,10 +58,10 @@ catch ME
 end
 ```
 
-For release-specific catalogs:
+For a one-time, cached, release-correct reference instead of repeated quick checks:
 
 ```matlab
-mbd_export_block_library_catalog(fullfile(pwd, '.MBD_agent', 'reports'), 3);
+mbd_export_full_catalog();   % cached after the first run; see matlab-discovery.md
 ```
 
 ## Line routing with `mbd_connect_line`

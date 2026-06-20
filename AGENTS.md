@@ -4,12 +4,12 @@ Use the MBD SDLC skill when the task involves MATLAB, Simulink, Model-Based Deve
 
 Default behavior:
 
-1. If MATLAB MCP tools are available, prefer them for discovery, MATLAB code checks, `.m` execution, and test execution. If the user requires the already-open MATLAB Desktop, use MCP existing-session mode or Python shared engine. Otherwise use terminal or browser mode.
+1. Default to reusing the user's already-open MATLAB session rather than starting a new process. If MATLAB MCP tools are available, prefer them (configured with `--matlab-session-mode=auto`) for discovery, MATLAB code checks, `.m` execution, and test execution. If MCP is unavailable and the MATLAB Engine API for Python is installed, use the Python shared-engine path after the user shares their session. Only fall back to terminal (`matlab -batch`/`matlab -r`, which always start a new process) or browser mode when neither reuse path is available.
 2. Discover MATLAB release and installed products.
 3. Keep AI artifacts under `.MBD_agent/`.
 4. Export model/workspace evidence before planning changes.
 5. Ask for edit approval and list exact intended changes.
-6. Implement through `.m` scripts. Use MCP `run_matlab_file` when available; use Python shared engine for an explicitly shared existing MATLAB Desktop session; otherwise use terminal MATLAB commands or browser handoff.
+6. Implement through `.m` scripts. Use MCP `run_matlab_file` when available; use Python shared engine for an already-shared MATLAB Desktop session; otherwise use terminal MATLAB commands or browser handoff.
 7. Re-export and validate before final response.
 
 Do not edit Simulink models manually when a scripted edit is possible.

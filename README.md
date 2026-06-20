@@ -45,12 +45,12 @@ For agents that support Model Context Protocol, the skill can use the official M
 Typical Claude Code setup after downloading the MATLAB MCP Server binary:
 
 ```bash
-claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --disable-telemetry=true
+claude mcp add --transport stdio matlab -- /full/path/to/matlab-mcp-server-binary --initial-working-folder=/path/to/mbd-project --matlab-session-mode=auto --disable-telemetry=true
 ```
 
-For an already-open MATLAB Desktop session, configure the MCP toolbox once, run `shareMATLABSession()` inside MATLAB, then start the server with `--matlab-session-mode=existing` or `--matlab-session-mode=auto` when the MATLAB release supports that mode.
+For an already-open MATLAB Desktop session, configure the MCP toolbox once, run `shareMATLABSession()` inside MATLAB, then start the server with `--matlab-session-mode=auto` — this attaches to that shared session automatically and only starts a new one when none is found, so it should be the default rather than an opt-in.
 
-If MCP existing-session mode is unavailable but MATLAB Engine API for Python is installed, share the running MATLAB Desktop session with:
+If MCP is unavailable but the MATLAB Engine API for Python is installed, share the running MATLAB Desktop session with:
 
 ```matlab
 matlab.engine.shareEngine
@@ -62,7 +62,7 @@ Then call the optional bridge from CMD/PowerShell/Bash:
 python skills/engineering/mbd-sdlc/assets/python/matlab_shared_engine_eval.py --code "assert(1+1==2); disp('ASSERT_TEST_PASS')"
 ```
 
-For a new interactive MATLAB session that should stay open, use `matlab -r "..."`. Use `matlab -batch "..."` for automation that should close MATLAB and return an exit code. Do not use `-r` to connect to an already-open MATLAB session.
+For a new interactive MATLAB session that should stay open, use `matlab -r "..."` — only after confirming with the user that a new process (not their open MATLAB Desktop) is what they want. Use `matlab -batch "..."` for automation that should close MATLAB and return an exit code. Neither flag connects to an already-open MATLAB session.
 
 See `docs/matlab-mcp-setup.md` and `skills/engineering/mbd-sdlc/references/matlab-mcp-integration.md`.
 
